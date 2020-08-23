@@ -10,6 +10,19 @@ import (
 	"github.com/labstack/echo"
 )
 
+func CreateUser(c echo.Context) error {
+	username := c.FormValue("username")
+	password := c.FormValue("password")
+
+	res, err := models.CreateUser(username, password)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, res)
+}
+
 func CheckLogin(c echo.Context) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")
@@ -38,7 +51,9 @@ func CheckLogin(c echo.Context) error {
 	// Generate encoded token and send it as response.
 	t, err := token.SignedString([]byte("secret"))
 	if err != nil {
-		return err
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"messages": err.Error(),
+		})
 	}
 
 	return c.JSON(http.StatusOK, map[string]string{
