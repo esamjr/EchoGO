@@ -14,3 +14,5 @@ $ go run server.go
 | POST   | /pegawai    |
 | PUT    | /pegawai    |
 | DELETE | /pegawai    |
+| POST   | /login      | *username & password
+| POST   | /register   | *username & password
