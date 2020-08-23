@@ -1,6 +1,6 @@
 # EchoGO
 
-Simple Restfull API with Echo & MySQL
+Simple Rest API with Echo & MySQL
 
 ## Usage
 
