@@ -1,8 +1,9 @@
 package middleware
 
-import "github.com/labstack/echo/middleware"
+import (
+	"github.com/labstack/echo/middleware"
+)
 
 var IsAuthenticated = middleware.JWTWithConfig(middleware.JWTConfig{
-	SigningKey:  []byte("secret"),
-	TokenLookup: "query:token",
+	SigningKey: []byte("secret"),
 })

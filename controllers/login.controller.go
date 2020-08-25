@@ -46,7 +46,7 @@ func CheckLogin(c echo.Context) error {
 	claims := token.Claims.(jwt.MapClaims)
 	claims["username"] = username
 	claims["level"] = "application"
-	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+	claims["exp"] = time.Now().Add(24 * time.Hour).Unix()
 
 	// Generate encoded token and send it as response.
 	t, err := token.SignedString([]byte("secret"))
@@ -57,7 +57,8 @@ func CheckLogin(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, map[string]string{
-		"token": t,
+		"message": "You Are Logged",
+		"token":   t,
 	})
 }
 

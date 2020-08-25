@@ -3,6 +3,8 @@ package models
 import (
 	"echo/db"
 	"net/http"
+
+	validator "github.com/go-playground/validator/v10"
 )
 
 type Pegawai struct {
@@ -47,6 +49,19 @@ func FetchAllPegawai() (Response, error) {
 func StorePegawai(nama, alamat, telepon string) (Response, error) {
 	var res Response
 
+	v := validator.New()
+
+	peg := Pegawai{
+		Nama:    nama,
+		Alamat:  alamat,
+		Telepon: telepon,
+	}
+
+	err := v.Struct(peg)
+	if err != nil {
+		return res, err
+	}
+
 	con := db.CreateCon()
 
 	sql := "INSERT pegawai (nama, alamat, telepon) VALUES (?, ?, ?)"
@@ -62,12 +77,18 @@ func StorePegawai(nama, alamat, telepon string) (Response, error) {
 		return res, err
 	}
 
-	lastInserterdId, err := result.LastInsertId()
+	lastInserterdID, err := result.LastInsertId()
 
 	res.Status = http.StatusOK
 	res.Message = "Success"
+
 	res.Data = map[string]int64{
-		"last_inserted_id": lastInserterdId,
+		"last_inserted_id": lastInserterdID,
+	}
+	res.Data = map[string]string{
+		"nama":    nama,
+		"alamat":  alamat,
+		"telepon": telepon,
 	}
 
 	return res, nil
